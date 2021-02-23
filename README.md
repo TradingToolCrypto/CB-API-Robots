@@ -3,6 +3,7 @@ Simple robots for interacting with the CryptoBridgeProClass including Open a Mar
 
 # Make an indicator 
 Turn any [indicator into a signal](https://github.com/TradingToolCrypto/TradingTool-Wiki/wiki/Indicator-ADR#build-indicators-with-alerts-and-global-variables) for robots to make trades based on your signal alert.  
+![Median channel](https://github.com/TradingToolCrypto/TradingTool-Wiki/blob/master/terminal64_Rls7DBxsBF.png)
 
 ## Setup the Robot Input Parameters  
 - Setup the **CRYPTO BRIDGE** within the robot input tabs including your api key and api secret for the crypto exchange that you plan to trade.  
