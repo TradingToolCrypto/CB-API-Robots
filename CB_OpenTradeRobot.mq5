@@ -1,9 +1,9 @@
 /*
 
    https://github.com/TradingToolCrypto/MT5-TradingToolCrypto/blob/master/MQL5/Include/TradingToolCrypto/CBP/CryptoBridgeProClass.mqh
-   
+
 ROBOT
-   - scan global variables for "Signal" 
+   - scan global variables for "Signal"
       - parse the signal information and make a market order on the exchange
       - only scan for a new signal on each new bar
 USER
@@ -13,14 +13,16 @@ USER
       - select the contract size
       - select the Quote Digit ( not required if using market orders)
       - select the Volume Digit (to properly normalize the contract size)
-      
-      
+
+
 
 */
-
-#include <TradingToolCrypto\CBP\CryptoBridgeProClass.mqh>
-#include <TradingToolCrypto\TT\bars.mqh>
-CryptoBridge bridge;      // cryptoBridge class
+#property copyright "Copyright 2020, TradingToolCrypto Corp."
+#property link      "https://github.com/tradingtoolcrypto"
+#property version     "1.00"
+#include <TradingToolCrypto\CBP\CryptoBridgeProClass.mqh>      // import the Crypto Bridge Class 
+#include <TradingToolCrypto\TT\bars.mqh>                       // import new_bar function
+CryptoBridge bridge;                                           // cryptoBridge class
 
 /*
 input group "TYPE IN THE ORDER TYPE"
@@ -81,34 +83,34 @@ void OnTick()
       bridge.Open_Trade(Exchange_Symbol_Name,"BUY","MARKET",DoubleToString(Exchange_Lotsize,Exchange_Lot_Precision), "",Exchange_Quote_Precision, Exchange_Lot_Precision,Exchange_Number,"");
      }
 
-/*
+   /*
 
-   if(Script_Open_Order == "LIMIT_BUY")
-     {
-      bridge.Open_Trade(Exchange_Symbol_Name,"BUY","LIMIT",DoubleToString(Exchange_Lotsize,Exchange_Lot_Precision), Order_Price,Exchange_Quote_Precision, Exchange_Lot_Precision,Exchange_Number,"");
-     }
+      if(Script_Open_Order == "LIMIT_BUY")
+        {
+         bridge.Open_Trade(Exchange_Symbol_Name,"BUY","LIMIT",DoubleToString(Exchange_Lotsize,Exchange_Lot_Precision), Order_Price,Exchange_Quote_Precision, Exchange_Lot_Precision,Exchange_Number,"");
+        }
 
-   if(Script_Open_Order == "LIMIT_SELL")
-     {
-      bridge.Open_Trade(Exchange_Symbol_Name,"SELL","LIMIT",DoubleToString(Exchange_Lotsize,Exchange_Lot_Precision), Order_Price,Exchange_Quote_Precision, Exchange_Lot_Precision,Exchange_Number,"");
-     }
+      if(Script_Open_Order == "LIMIT_SELL")
+        {
+         bridge.Open_Trade(Exchange_Symbol_Name,"SELL","LIMIT",DoubleToString(Exchange_Lotsize,Exchange_Lot_Precision), Order_Price,Exchange_Quote_Precision, Exchange_Lot_Precision,Exchange_Number,"");
+        }
 
-   if(Script_Open_Order == "STOP_SELL")
-     {
-      bridge.Open_Trade_Stop(Exchange_Symbol_Name,"SELL","STOP_LOSS",DoubleToString(Exchange_Lotsize,Exchange_Lot_Precision), Order_Price,Exchange_Quote_Precision, Exchange_Lot_Precision,Exchange_Number,"");
-     }
+      if(Script_Open_Order == "STOP_SELL")
+        {
+         bridge.Open_Trade_Stop(Exchange_Symbol_Name,"SELL","STOP_LOSS",DoubleToString(Exchange_Lotsize,Exchange_Lot_Precision), Order_Price,Exchange_Quote_Precision, Exchange_Lot_Precision,Exchange_Number,"");
+        }
 
-   if(Script_Open_Order == "STOP_BUY")
-     {
-      bridge.Open_Trade_Stop(Exchange_Symbol_Name,"BUY","STOP_LOSS",DoubleToString(Exchange_Lotsize,Exchange_Lot_Precision), Order_Price,Exchange_Quote_Precision, Exchange_Lot_Precision,Exchange_Number,"");
-     }
- */
+      if(Script_Open_Order == "STOP_BUY")
+        {
+         bridge.Open_Trade_Stop(Exchange_Symbol_Name,"BUY","STOP_LOSS",DoubleToString(Exchange_Lotsize,Exchange_Lot_Precision), Order_Price,Exchange_Quote_Precision, Exchange_Lot_Precision,Exchange_Number,"");
+        }
+    */
 
   }
 /*
 
    Signal#BTCUSDT#15#SELL
-   
+
    [0] = signal
    [1] = symbol
    [2] = timeframe
@@ -135,24 +137,38 @@ string scan_globals_for_signals(string findItem, string hash)
       found a global that matches our criteria
       GlobalVariableSet(sym+"#" + IntegerToString(Period()) + "#SELL", valueHigh);
       */
-      if(result[0] == findItem){
+      if(result[0] == findItem)
+        {
          /*
-         Found the signal direction
-         Delete the global to prevent duplicate signals
+         
+         parse the symbol name and match with the CryptoBridge Class
+         
+         CB_charts creates a unique suffix based on the exchange that we are charting such as BTCUSDT.bnf for BinanceFutures USDT market. 
+         We will parse the suffix from this chart's symbol to return only BTCUSDT
+         Then we will match this string with the Crypto Bridge input Exchange Symbol Name
+         
+         if we have a match we know we have an alert on the correct exchange. 
+         
          */
-         if(result[3] == "SELL")
+         if(remove_suffix_from_symbol(result[1]) == Exchange_Symbol_Name)
            {
+            /*
+            Found the signal direction
+            Delete the global to prevent duplicate signals
+            */
+            if(result[3] == "SELL")
+              {
+               GlobalVariableDel(name);
+               return("SELL");
 
-            GlobalVariableDel(name);
-            return("SELL");
-
+              }
+            if(result[3] == "BUY")
+              {
+               GlobalVariableDel(name);
+               return("BUY");
+              }
            }
-         if(result[3] == "BUY")
-           {
-            GlobalVariableDel(name);
-            return("BUY");
-           }
-       }
+        }
 
      }
    return("NONE");
