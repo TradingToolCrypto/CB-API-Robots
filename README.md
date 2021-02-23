@@ -15,6 +15,10 @@ Turn any [indicator into a signal](https://github.com/TradingToolCrypto/TradingT
 ![Add your settings](https://github.com/TradingToolCrypto/CB-API-Robots/blob/main/terminal64_txS6L7JxIu.png)  
 ## CB_OpenTradeRobot.mq5
 This is a simple robot that places market orders on your crypto exchange account after finding a global variable made from your indicator. Once the robot finds the global variable that starts with **Signal** it will proceed with parsing the symbol to match the market that you want to trade. Once the match is complete, the robot will delete the global variable and place a market order on the exchange. 
+### Signal format
+GlobalVariableSet("Signal#" + Symbol() + "#" +periodToString(tf) + "#Sell",price);  
+- Signal#BTCUSDT.bnf#15#BUY (this means we have a **signal** on symbol **XYZ** with timeframe M**15** with instructions to **buy**)   
+- Signal#BTCUSDT.bnf#60#SELL (this means we have a **signal** on symbol **XYZ** with timeframe M**60** with instructions to **sell**) 
 
 ### What to consider
 Your indicator should make an alert global variable once per bar. The robot will delete this global variable once it has matched the appropiate market name.  CB Charts creates a unique market name such as BTCUSDT.bnf ( for binance futures), while the robot will trade on the exchange with the symbol BTCUSDT.  The **CB_OpenTradeRobot** will remove the suffix from the indicator's signal to match the appropiate market that you wish to trade.  
