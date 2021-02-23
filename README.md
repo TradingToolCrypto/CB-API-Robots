@@ -2,7 +2,7 @@
 Simple robots for interacting with the CryptoBridgeProClass including Open a Market, Limit, Stop, and StopLimit order. Modify order, cancel order and get your Balance, Margin,PNL.
 
 ## Setup the Robot Input Parameters  
-- Setup the CRYPTO BRIDGE within the robot input tabs
+- Setup the **CRYPTO BRIDGE** within the robot input tabs including your api key and api secret for the crypto exchange that you plan to trade.  
       - select the exchange  
       - select the market  
       - select the contract size  
