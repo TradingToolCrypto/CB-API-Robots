@@ -1,9 +1,6 @@
 # CB-API-Robots
 Simple robots for interacting with the CryptoBridgeProClass including Open a Market, Limit, Stop, and StopLimit order. Modify order, cancel order and get your Balance, Margin,PNL.
 
-# Make an indicator 
-Turn any [indicator into a signal](https://github.com/TradingToolCrypto/TradingTool-Wiki/wiki/Indicator-ADR#build-indicators-with-alerts-and-global-variables) for robots to make trades based on your signal alert.  
-![Median channel](https://github.com/TradingToolCrypto/TradingTool-Wiki/blob/master/terminal64_Rls7DBxsBF.png)
 
 ## Setup the Robot Input Parameters  
 - Setup the **CRYPTO BRIDGE** within the robot input tabs including your api key and api secret for the crypto exchange that you plan to trade.  
@@ -15,6 +12,12 @@ Turn any [indicator into a signal](https://github.com/TradingToolCrypto/TradingT
 ![Add your settings](https://github.com/TradingToolCrypto/CB-API-Robots/blob/main/terminal64_txS6L7JxIu.png)  
 ## CB_OpenTradeRobot.mq5
 This is a simple robot that places market orders on your crypto exchange account after finding a global variable made from your indicator. Once the robot finds the global variable that starts with **Signal** it will proceed with parsing the symbol to match the market that you want to trade. Once the match is complete, the robot will delete the global variable and place a market order on the exchange. 
+
+# Other Ideas
+## Make an indicator for signals
+Turn any [indicator into a signal](https://github.com/TradingToolCrypto/TradingTool-Wiki/wiki/Indicator-ADR#build-indicators-with-alerts-and-global-variables) for robots to make trades based on your signal alert.  
+![Median channel](https://github.com/TradingToolCrypto/TradingTool-Wiki/blob/master/terminal64_Rls7DBxsBF.png)
+
 ### Signal format
 GlobalVariableSet("Signal#" + Symbol() + "#" +periodToString(tf) + "#Sell",price);  
 - Signal#BTCUSDT.bnf#15#BUY (this means we have a **signal** on symbol **XYZ** with timeframe M**15** with instructions to **buy**)   
